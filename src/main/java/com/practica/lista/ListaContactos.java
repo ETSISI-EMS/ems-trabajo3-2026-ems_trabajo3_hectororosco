@@ -135,7 +135,7 @@ public class ListaContactos {
 	public String getPrimerNodo() {
 		NodoTemporal aux = lista;
 		String cadena = aux.getFecha().getFecha().toString();
-		cadena+= ";" +  aux.getFecha().getHora().toString();
+		cadena += ";" +  aux.getFecha().getHora().toString();
 		return cadena;
 	}
 
@@ -145,69 +145,43 @@ public class ListaContactos {
 	 * nuestra lista funciona de manera correcta.
 	 */
 	public int numPersonasEntreDosInstantes(FechaHora inicio, FechaHora fin) {
-		if(this.size==0)
-			return 0;
-		NodoTemporal aux = lista;
-		int cont = 0;
-		while(aux!=null) {
-			if(aux.getFecha().compareTo(inicio)>=0 && aux.getFecha().compareTo(fin)<=0) {
-                NodoPosicion nodo = aux.getListaCoordenadas();
-                cont = contarNodo(nodo.getNumPersonas(), nodo);
-
-				aux = aux.getSiguiente();
-			}else {
-				aux=aux.getSiguiente();
-			}
-		}
-		return cont;
+		return contarTipoNodo(true, inicio, fin);
 	}
 	
 	public int numNodosCoordenadaEntreDosInstantes(FechaHora inicio, FechaHora fin) {
-		if(this.size==0)
-			return 0;
-
-		NodoTemporal aux = lista;
-        int cont = 0;
-		while(aux!=null) {
-			if(aux.getFecha().compareTo(inicio)>=0 && aux.getFecha().compareTo(fin)<=0) {
-                NodoPosicion nodo = aux.getListaCoordenadas();
-                cont = contarNodo(1, nodo);
-
-				aux = aux.getSiguiente();
-			}else {
-				aux=aux.getSiguiente();
-			}
-		}
-
-		return cont;
+		return contarTipoNodo(false, inicio, fin);
 	}
 
-    private int contarNodo(int incremento, NodoPosicion nodo) {
-        int cont = 0;
+    private int contarTipoNodo(boolean cuentaPersonas, FechaHora inicio, FechaHora fin) {
+        if(this.size == 0)
+            return 0;
 
-        while (nodo != null) {
-             cont += incremento;
-             nodo = nodo.getSiguiente();
+        NodoTemporal aux = lista;
+        int cont = 0;
+        while(aux != null) {
+            if(aux.getFecha().compareTo(inicio) >= 0 && aux.getFecha().compareTo(fin) <= 0) {
+                NodoPosicion nodo = aux.getListaCoordenadas();
+                if (cuentaPersonas){
+                    cont = contarNodo(nodo.getNumPersonas(), nodo);
+                } else {
+                    cont = contarNodo(1, nodo);
+                }
+
+                aux = aux.getSiguiente();
+            }else {
+                aux = aux.getSiguiente();
+            }
         }
 
         return cont;
     }
 
-	private int numNodos(int incremento, FechaHora inicio, FechaHora fin) {
-        NodoTemporal aux = lista;
+    private int contarNodo(int incremento, NodoPosicion nodo) {
         int cont = 0;
 
-        while(aux!=null) {
-            if(aux.getFecha().compareTo(inicio)>=0 && aux.getFecha().compareTo(fin)<=0) {
-                NodoPosicion nodo = aux.getListaCoordenadas();
-                while(nodo!=null) {
-                    cont = cont + incremento;
-                    nodo = nodo.getSiguiente();
-                }
-                aux = aux.getSiguiente();
-            }else {
-                aux=aux.getSiguiente();
-            }
+        while (nodo != null) {
+            cont += incremento;
+            nodo = nodo.getSiguiente();
         }
 
         return cont;
@@ -216,8 +190,7 @@ public class ListaContactos {
 	@Override
 	public String toString() {
 		String cadena="";
-		int a,cont;
-		cont=0;
+		int cont= 0;
 		NodoTemporal aux = lista;
 		for(cont=1; cont<size; cont++) {
 			cadena += aux.getFecha().getFecha().toString();
