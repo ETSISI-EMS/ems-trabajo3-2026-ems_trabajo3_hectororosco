@@ -149,15 +149,11 @@ public class ListaContactos {
 			return 0;
 		NodoTemporal aux = lista;
 		int cont = 0;
-		int a;
-		cont = 0;
 		while(aux!=null) {
 			if(aux.getFecha().compareTo(inicio)>=0 && aux.getFecha().compareTo(fin)<=0) {
-				NodoPosicion nodo = aux.getListaCoordenadas();
-				while(nodo!=null) {
-					cont = cont + nodo.getNumPersonas();
-					nodo = nodo.getSiguiente();
-				}				
+                NodoPosicion nodo = aux.getListaCoordenadas();
+                cont = contarNodo(nodo.getNumPersonas(), nodo);
+
 				aux = aux.getSiguiente();
 			}else {
 				aux=aux.getSiguiente();
@@ -165,32 +161,57 @@ public class ListaContactos {
 		}
 		return cont;
 	}
-	
-	
 	
 	public int numNodosCoordenadaEntreDosInstantes(FechaHora inicio, FechaHora fin) {
 		if(this.size==0)
 			return 0;
+
 		NodoTemporal aux = lista;
-		int cont = 0;
-		int a;
-		cont = 0;
+        int cont = 0;
 		while(aux!=null) {
 			if(aux.getFecha().compareTo(inicio)>=0 && aux.getFecha().compareTo(fin)<=0) {
-				NodoPosicion nodo = aux.getListaCoordenadas();
-				while(nodo!=null) {
-					cont = cont + 1;
-					nodo = nodo.getSiguiente();
-				}				
+                NodoPosicion nodo = aux.getListaCoordenadas();
+                cont = contarNodo(1, nodo);
+
 				aux = aux.getSiguiente();
 			}else {
 				aux=aux.getSiguiente();
 			}
 		}
+
 		return cont;
 	}
-	
-	
+
+    private int contarNodo(int incremento, NodoPosicion nodo) {
+        int cont = 0;
+
+        while (nodo != null) {
+             cont += incremento;
+             nodo = nodo.getSiguiente();
+        }
+
+        return cont;
+    }
+
+	private int numNodos(int incremento, FechaHora inicio, FechaHora fin) {
+        NodoTemporal aux = lista;
+        int cont = 0;
+
+        while(aux!=null) {
+            if(aux.getFecha().compareTo(inicio)>=0 && aux.getFecha().compareTo(fin)<=0) {
+                NodoPosicion nodo = aux.getListaCoordenadas();
+                while(nodo!=null) {
+                    cont = cont + incremento;
+                    nodo = nodo.getSiguiente();
+                }
+                aux = aux.getSiguiente();
+            }else {
+                aux=aux.getSiguiente();
+            }
+        }
+
+        return cont;
+    }
 	
 	@Override
 	public String toString() {
